@@ -195,6 +195,8 @@
     <Compile Include="Assets\SampleScenes\Scripts\PlaceTargetWithMouse.cs" />
     <Compile Include="Assets\SampleScenes\Scripts\SlowMoButton.cs" />
     <Compile Include="Assets\Script\CharacterSelection.cs" />
+    <Compile Include="Assets\Script\EnemyAI.cs" />
+    <Compile Include="Assets\Script\EnemyAttack.cs" />
     <Compile Include="Assets\Script\Menu.cs" />
     <Compile Include="Assets\Script\PlayerMovement.cs" />
     <Compile Include="Assets\Script\RandomSpawn.cs" />
