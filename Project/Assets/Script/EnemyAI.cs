@@ -8,6 +8,7 @@ public class EnemyAI : MonoBehaviour
     GameObject player;
     NavMeshAgent enemy;
     static Animator anim;
+    public static bool isPlayerAlive;
 
     // Start is called before the first frame update
     void Start()
@@ -20,7 +21,22 @@ public class EnemyAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Vector3.Distance(player.transform.position, this.transform.position) < 1)
+        Shooting();
+        Moving();
+    }
+
+    void Shooting()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void Moving()
+    {
+        float distance = Vector3.Distance(player.transform.position, this.transform.position);
+        if (distance < 1)
         {
             anim.SetBool("isWalking", false);
             anim.SetBool("isAttacking", true);
@@ -30,7 +46,7 @@ public class EnemyAI : MonoBehaviour
             anim.SetBool("isIdle", false);
             enemy.destination = player.transform.position;
             anim.SetBool("isWalking", true);
-            
+
         }
         else
         {
