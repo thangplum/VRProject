@@ -9,6 +9,7 @@ public class EnemyAI : MonoBehaviour
     NavMeshAgent enemy;
     static Animator anim;
     public static bool isPlayerAlive;
+    public float rotationDamping;
 
     // Start is called before the first frame update
     void Start()
@@ -36,14 +37,18 @@ public class EnemyAI : MonoBehaviour
     void Moving()
     {
         float distance = Vector3.Distance(player.transform.position, this.transform.position);
-        if (distance < 1)
+        Vector3 direction = player.transform.position - this.transform.position;
+        if (Vector3.Distance(player.transform.position, this.transform.position) < 6f && Vector3.Distance(player.transform.position, this.transform.position) > 5.5f)
         {
+            Debug.Log(Vector3.Distance(player.transform.position, this.transform.position));
             anim.SetBool("isWalking", false);
             anim.SetBool("isAttacking", true);
+            Attack();
         }
-        else if (Vector3.Distance(player.transform.position, this.transform.position) < 10)
+        else if (Vector3.Distance(player.transform.position, this.transform.position) < 10f)
         {
             anim.SetBool("isIdle", false);
+            direction.y = 0;
             enemy.destination = player.transform.position;
             anim.SetBool("isWalking", true);
 
@@ -54,5 +59,25 @@ public class EnemyAI : MonoBehaviour
             anim.SetBool("isWalking", false);
             anim.SetBool("isAttacking", false);
         }
+    }
+
+    void Attack()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(this.transform.position, this.transform.forward, out hit))
+        {
+            if (hit.collider.gameObject.tag == "Player")
+            {
+                hit.collider.gameObject.GetComponent<PlayerHealth>().health -= 5f;
+                this.transform.rotation = Quaternion.identity;
+                Debug.Log("Hit");
+            }
+        }
+    }
+
+    void lookAtPlayer()
+    {
+        Quaternion rotation = Quaternion.LookRotation(player.transform.position - transform.position);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationDamping);
     }
 }
