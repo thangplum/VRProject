@@ -38,12 +38,10 @@ public class EnemyAI : MonoBehaviour
     {
         float distance = Vector3.Distance(player.transform.position, this.transform.position);
         Vector3 direction = player.transform.position - this.transform.position;
-        if (Vector3.Distance(player.transform.position, this.transform.position) < 6f && Vector3.Distance(player.transform.position, this.transform.position) > 5.5f)
+        if (Vector3.Distance(player.transform.position, this.transform.position) == 6f)
         {
-            Debug.Log(Vector3.Distance(player.transform.position, this.transform.position));
             anim.SetBool("isWalking", false);
             anim.SetBool("isAttacking", true);
-            Attack();
         }
         else if (Vector3.Distance(player.transform.position, this.transform.position) < 10f)
         {
@@ -61,17 +59,12 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
-    void Attack()
+    void OnTriggerStay(Collider other)
     {
-        RaycastHit hit;
-        if (Physics.Raycast(this.transform.position, this.transform.forward, out hit))
+        if (other.gameObject.CompareTag("Player"))
         {
-            if (hit.collider.gameObject.tag == "Player")
-            {
-                hit.collider.gameObject.GetComponent<PlayerHealth>().health -= 5f;
-                this.transform.rotation = Quaternion.identity;
-                Debug.Log("Hit");
-            }
+            PlayerHealth.health -= 5f;
+            Debug.Log("Hit");
         }
     }
 
